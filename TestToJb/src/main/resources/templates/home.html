@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="Home"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<script type="text/javascript">
+    $.get("/user", function(data) {
+        $("#user").html(data.name);
+        $(".unauthenticated").hide()
+        $(".authenticated").show()
+    });
+</script>
+<div class="container unauthenticated">
+    <p th:text="'Welcome ' + ${title}+ '! This is a home page'" />
+    <h4><a href="/signin">Sign in</a></h4>
+</div>
+<div class="container authenticated">
+    Logged in as: <span id="user"></span>
+    <div>
+        <script>
+            var logout = function() {
+                $.post("/logout", function() {
+                    $("#user").html('');
+                    $(".unauthenticated").show();
+                    $(".authenticated").hide();
+                })
+                return true;
+            }
+        </script>
+        <button onClick="logout()" class="btn btn-primary">Sign out</button>
+    </div>
+</div>
+</body>
+</html>
